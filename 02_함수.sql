@@ -456,6 +456,8 @@ SELECT SUM(SALARY)
 FROM EMPLOYEE
 WHERE EXTRACT(YEAR FROM HIRE_DATE) >= 2000;
 
+SELECT HIRE_DATE 
+FROM EMPLOYEE;
 -----------------------
 
 -- AVG(숫자만 기록된 컬럼) : 그룹의 평균
