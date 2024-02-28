@@ -324,12 +324,12 @@ FROM DUAL;
 
 -- TO_NUMBER(문자열 [,패턴]) : 문자열 -> 숫자 변환
 
-SELECT TO_NUMBER('$1,500','$9,999') --1500
+SELECT TO_NUMBER('$1,500','$9,999') --1,500
 FROM DUAL;
 
 ------------------------------------------------------------------------
 
--- <NULL 처리 연산> : IN NULL/IS NOT NULL -> 연산자
+-- <NULL 처리 연산> : IS NULL/IS NOT NULL -> 연산자
 
 -- <NULL 처리 함수>
 
