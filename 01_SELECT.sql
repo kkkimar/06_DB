@@ -15,7 +15,8 @@
  * SELECT 컬럼명, 컬럼명, ...
  * FROM 테이블명;
  * 
- * -> 기정된 테이블 모든 행에서 컬럼명이 일치하는 컬럼 값 조회
+ * 
+ * -> 지정된 테이블 모든 행에서 컬럼명이 일치하는 컬럼 값 조회
  * 
  * */
 
@@ -119,7 +120,7 @@ FROM DUAL;
 SELECT EMP_NAME , HIRE_DATE , SYSDATE -HIRE_DATE 
 FROM EMPLOYEE;
 
--- DEIL(숫자) : 올림 처리
+-- CEIL(숫자) : 올림 처리
 -- 현재 시간 - 생년월일
 SELECT CEIL (( SYSDATE - TO_DATE('1989-12-15', 'YYYY-MM-DD')) /365 )
 FROM DUAL;
@@ -207,7 +208,7 @@ FROM EMPLOYEE;
 /* [SELECT 작성법 - 2]
  * 
  * SELECT 컬럼명, 컬럼명, ...
- * FROM 테이블명;
+ * FROM 테이블명
  * WHERE 조건식;
  * 
  * -> 지정된 테이블 모든 행에서 
@@ -225,7 +226,7 @@ FROM EMPLOYEE;
 /*
  * 지정된 테이블에서 
  * WHERE절로 행을 먼저 추려내고
- * 추려진 결과 행들 중에서 원하는 칼럼만 조회
+ * 추려진 결과 행들 중에서 원하는 컬럼만 조회
  * */
 
 -- EMPLOYEE 테이블에서 연봉이 5천만원 이하인 사원의
