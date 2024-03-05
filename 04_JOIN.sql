@@ -191,7 +191,7 @@ FROM EMPLOYEE
 SELECT EMP_NAME, DEPT_TITLE
 FROM EMPLOYEE LEFT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID);
 --> JOIN구문 기준으로 왼쪽에 작성된 테이블에 
---  모든 행이 최조결과(RESULT SET)에 포함 되도록 하는 JOIN
+--  모든 행이 최종결과(RESULT SET)에 포함 되도록 하는 JOIN
 --  ==LEFT JOIN
 
 -- 오라클 구문
