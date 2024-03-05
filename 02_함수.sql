@@ -63,7 +63,7 @@ FROM DUAL; --DEFG
 -- 사원명, 이메일 아이디 (@ 앞에까지 문자열)을
 -- 이메일 아이디 오름차순으로 조회
 
-SELECT EMP_NAME, 
+SELECT EMP_NAME,
 		   SUBSTR(EMAIL, 1, INSTR(EMAIL, '@') -1) "이메일 아이디"
 FROM EMPLOYEE
 ORDER BY "이메일 아이디";
