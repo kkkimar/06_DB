@@ -170,6 +170,295 @@ SELECT COUNT(*) FROM TB_MEMBER WHERE GRADE != '30';
 SELECT MEMBER_NAME FROM TB_MEMBER 
 WHERE GRADE = '20' AND MEMBERID = (SELECT MAX(MEMBERID) FROM TB_MEMBER WHERE GRADE = '20');
 
+--31: 모든 회원의 이름과 등급을 조회
+
+--32: ​서울에 거주하는 모든 회원의 이름과 등급을 조회
+
+--33: ​우수회원인 회원들의 이름과 등급을 조회
+
+--34: ​특별회원 중에서 이름에 '이'가 들어가는 회원들의 이름을 조회
+
+--35: ​각 등급별로 몇 명의 회원이 있는지 조회
+
+--36: 각 지역별로 몇 명의 회원이 있는지 조회
+
+--37: ​각 지역별로 등급이 '우수회원'인 회원의 수를 조회
+
+--38: ​​지역별로 회원 수가 2명 이상인 지역 중에서 등급이 '일반회원'인 회원 수가 1명 이상인 지역을 조회
+
+--39: ​​각 등급별로 평균 회원 수와 최대 회원 수를 조회
+
+--40: ​​등급이 '특별회원'이면서, 서울에 거주하는 회원 중에서 등급별로 가장 많은 회원 수를 가진 지역을 조회
+
+--41: ​​​회원 아이디가 'hong'으로 시작하고 등급이 '일반회원'인 회원의 이름을 조회
+
+--42: ​​​각 등급별로 회원의 수가 가장 많은 지역을 조회
+
+--43: ​​​각 지역별로 등급이 '특별회원'인 회원의 수를 조회 만약 그 지역에 특별회원이 없으면 '0'으로 표시
+
+--44: ​​​등급이 '특별회원'이 아니고 지역이 '서울'이 아닌 회원 중에서 이름이 '김'으로 시작하는 회원의 수를 조회
+
+--45: ​​​우수회원이면서 지역이 '경기'인 회원들의 평균 등급을 조회
+
+--46: ​​​서울과 경기에 거주하는 회원 중에서 이름이 '이'로 끝나는 회원의 등급을 조회
+
+--47: ​​​특별회원이 아닌 회원 중에서 등급이 가장 높은 회원의 이름을 조회
+
+--48: ​​​서울과 인천에 거주하며 등급이 '일반회원'인 회원의 수를 조회
+
+ 
+
+ 
+
+모든 회원의 이름과 등급을 조회
+
+SELECT M.MEMBER_NAME, G.GRADE_NAME
+
+FROM TB_MEMBER M
+
+JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE;
+
+ 
+
+서울에 거주하는 모든 회원의 이름과 등급을 조회
+
+SELECT M.MEMBER_NAME, G.GRADE_NAME
+
+FROM TB_MEMBER M
+
+JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+WHERE A.AREA_NAME = '서울';
+
+ 
+
+우수회원인 회원들의 이름과 등급을 조회
+
+SELECT MEMBER_NAME, GRADE
+
+FROM TB_MEMBER
+
+WHERE GRADE = '20';
+
+ 
+
+특별회원 중에서 이름에 '이'가 들어가는 회원들의 이름을 조회
+
+SELECT MEMBER_NAME
+
+FROM TB_MEMBER
+
+WHERE GRADE = '30' AND MEMBER_NAME LIKE '%이%';
+
+ 
+
+각 등급별로 몇 명의 회원이 있는지 조회
+
+SELECT G.GRADE_NAME, COUNT(*) AS MEMBER_COUNT
+
+FROM TB_MEMBER M
+
+JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+GROUP BY G.GRADE_NAME;
+
+ 
+
+각 지역별로 몇 명의 회원이 있는지 조회
+
+SELECT A.AREA_NAME, COUNT(*) AS MEMBER_COUNT
+
+FROM TB_MEMBER M
+
+JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+GROUP BY A.AREA_NAME;
+
+ 
+
+각 지역별로 등급이 '우수회원'인 회원의 수를 조회
+
+SELECT A.AREA_NAME, COUNT(*) AS EXCELLENT_MEMBER_COUNT
+
+FROM TB_MEMBER M
+
+JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+WHERE M.GRADE = '20'
+
+GROUP BY A.AREA_NAME;
+
+ 
+
+지역별로 회원 수가 2명 이상인 지역 중에서 등급이 '일반회원'인 회원 수가 1명 이상인 지역을 조회
+
+SELECT A.AREA_NAME
+
+FROM TB_MEMBER M
+
+JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+GROUP BY A.AREA_NAME
+
+HAVING COUNT(*) >= 2
+
+AND SUM(CASE WHEN M.GRADE = '10' THEN 1 ELSE 0 END) >= 1;
+
+ 
+
+각 등급별로 평균 회원 수와 최대 회원 수를 조회
+
+SELECT G.GRADE_NAME, AVG(MEMBER_COUNT) AS AVERAGE_MEMBER_COUNT, MAX(MEMBER_COUNT) AS MAX_MEMBER_COUNT
+
+FROM (
+
+    SELECT G.GRADE_NAME, COUNT(*) AS MEMBER_COUNT
+
+    FROM TB_MEMBER M
+
+    JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+    GROUP BY G.GRADE_NAME
+
+) GROUP_BY_RESULT
+
+GROUP BY G.GRADE_NAME;
+
+ 
+
+등급이 '특별회원'이면서, 서울에 거주하는 회원 중에서 등급별로 가장 많은 회원 수를 가진 지역을 조회
+
+SELECT G.GRADE_NAME, A.AREA_NAME, MAX(MEMBER_COUNT) AS MAX_MEMBER_COUNT
+
+FROM (
+
+    SELECT G.GRADE_NAME, A.AREA_NAME, COUNT(*) AS MEMBER_COUNT
+
+    FROM TB_MEMBER M
+
+    JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+    JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+    WHERE G.GRADE_NAME = '특별회원' AND A.AREA_NAME = '서울'
+
+    GROUP BY G.GRADE_NAME, A.AREA_NAME
+
+) GROUP_BY_RESULT;
+
+ 
+
+회원 아이디가 'hong'으로 시작하고 등급이 '일반회원'인 회원의 이름을 조회
+
+SELECT MEMBER_NAME
+
+FROM TB_MEMBER
+
+WHERE MEMBERID LIKE 'hong%' AND GRADE = '10';
+
+ 
+
+각 등급별로 회원의 수가 가장 많은 지역을 조회
+
+SELECT G.GRADE_NAME, A.AREA_NAME, MAX(MEMBER_COUNT) AS MAX_MEMBER_COUNT
+
+FROM (
+
+    SELECT G.GRADE_NAME, A.AREA_NAME, COUNT(*) AS MEMBER_COUNT
+
+    FROM TB_MEMBER M
+
+    JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+    JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+    GROUP BY G.GRADE_NAME, A.AREA_NAME
+
+) GROUP_BY_RESULT
+
+GROUP BY G.GRADE_NAME;
+
+ 
+
+각 지역별로 등급이 '특별회원'인 회원의 수를 조회 만약 그 지역에 특별회원이 없으면 '0'으로 표시
+
+SELECT A.AREA_NAME, NVL(COUNT(M.MEMBERID), 0) AS SPECIAL_MEMBER_COUNT
+
+FROM TB_AREA A
+
+LEFT JOIN TB_MEMBER M ON A.AREA_CODE = M.AREA_CODE AND M.GRADE = '30'
+
+GROUP BY A.AREA_NAME;
+
+ 
+
+ 
+
+등급이 '특별회원'이 아니고 지역이 '서울'이 아닌 회원 중에서 이름이 '김'으로 시작하는 회원의 수를 조회
+
+SELECT COUNT(*)
+
+FROM TB_MEMBER
+
+WHERE GRADE <> '30' AND AREA_CODE <> '02' AND MEMBER_NAME LIKE '김%';
+
+ 
+
+우수회원이면서 지역이 '경기'인 회원들의 평균 등급을 조회
+
+SELECT AVG(G.GRADE_CODE)
+
+FROM TB_MEMBER M
+
+JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+WHERE M.GRADE = '20' AND M.AREA_CODE = '031';
+
+ 
+
+서울과 경기에 거주하는 회원 중에서 이름이 '이'로 끝나는 회원의 등급을 조회
+
+SELECT G.GRADE_NAME
+
+FROM TB_MEMBER M
+
+JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+WHERE A.AREA_NAME IN ('서울', '경기') AND M.MEMBER_NAME LIKE '%이';
+
+ 
+
+특별회원이 아닌 회원 중에서 등급이 가장 높은 회원의 이름을 조회
+
+SELECT M.MEMBER_NAME
+
+FROM TB_MEMBER M
+
+JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+WHERE G.GRADE_NAME != '특별회원'
+
+ORDER BY G.GRADE_CODE DESC
+
+FETCH FIRST 1 ROW ONLY;
+
+ 
+
+서울과 인천에 거주하며 등급이 '일반회원'인 회원의 수를 조회
+
+SELECT COUNT(*)
+
+FROM TB_MEMBER M
+
+JOIN TB_AREA A ON M.AREA_CODE = A.AREA_CODE
+
+JOIN TB_GRADE G ON M.GRADE = G.GRADE_CODE
+
+WHERE A.AREA_NAME IN ('서울', '인천') AND G.GRADE_NAME = '일반회원';​​
 
 
 
