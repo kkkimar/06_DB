@@ -196,6 +196,7 @@ WHERE LOCAL_NAME LIKE 'ASIA%';--18행
 -- 2) 아시아 지역 근무 직원 보너스 0.3으로 변경
 UPDATE EMPLOYEE2 
 SET BONUS = 0.3
+-- 다중행 서브쿼리 IN으로 비교
 WHERE EMP_ID IN (
 	SELECT EMP_ID 
 	FROM EMPLOYEE2
