@@ -10,7 +10,8 @@
 - User_tables : 자신의 계정이 소유한 객체 등에 관한 정보를 조회 할 수 있는 딕셔너리 뷰
 
 */
-SELECT * FROM USER_TABLES;
+SELECT * FROM USER_TABLES
+ORDER BY TABLE_NAME;
 
 
 
@@ -221,7 +222,7 @@ VALUES(1, 'user01', 'pass01', '홍길동', '남', '010-1234-5678', 'hong123@kh.o
 INSERT INTO USER_USED_NN
 VALUES(NULL, NULL, NULL, NULL, NULL, '010-1234-5678', 'hong123@kh.or.kr');
 --> NOT NULL 제약 조건에 위배되어 오류 발생 
--- ORA-01400: NULL을 ("KH_BDH"."USER_USED_NN"."USER_NO") 안에 삽입할 수 없습니다
+-- ORA-01400: NULL을 ("KH_KAR"."USER_USED_NN"."USER_NO") 안에 삽입할 수 없습니다
 --------------------------------------------------------------------------------------------------------------------
 
 
