@@ -247,14 +247,14 @@ CREATE TABLE USER_USED_UK(
     									-- 컬럼 레벨 제약 조건 (이름 O)
     
     USER_PWD VARCHAR2(30) ,
-    USER_NAME VARCHAR2(30), -- 테이블 레벨로 UNIQUE 제약 조건 설정
+    USER_NAME VARCHAR2(30), 
     GENDER VARCHAR2(10),
     PHONE VARCHAR2(30),
     EMAIL VARCHAR2(50),
     
-    -- 테이블 레벨 --
+    -- 테이블 레벨로 UNIQUE 제약 조건 설정
     -- UNIQUE(USER_NAME)  -- 테이블 레벨 제약 조건 (이름 X)
-    CONSTRAINT USER_NAME_U UNIQUE(USER_NAME)
+    CONSTRAINT USER_NAME_U UNIQUE(USER_NAME) 
 );
 
 
