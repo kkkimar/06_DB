@@ -140,6 +140,9 @@ SELECT * FROM DEPARTMENT2;
 
 ROLLBACK;
 
+SELECT *
+FROM DEPARTMENT4;
+
 ---------------------------------------
 
 -- * UPDATE시에도 서브쿼리를 사용 가능
